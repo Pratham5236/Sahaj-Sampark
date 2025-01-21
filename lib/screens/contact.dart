@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:sahajsampark/utils/constants.dart';
 import 'package:sahajsampark/utils/helper.dart';
 import 'package:flutter/material.dart';
@@ -71,13 +73,46 @@ class ContactScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
                         onTap: () async {
-                          await launchUrl(Uri.parse('tel:${phone.number}'));
+                          await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Select action'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () async {
+                                          await launchUrl(
+                                              Uri.parse('tel:${phone.number}'));
+                                        },
+                                        child: const Text('Call')),
+                                    TextButton(
+                                        onPressed: () async {
+                                          final phoneNumber = phone.number
+                                              .replaceAll('+', '')
+                                              .replaceAll(' ', '');
+                                          await launchUrl(Uri.parse(
+                                              'https://wa.me:/$phoneNumber'));
+                                        },
+                                        child: const Text('WhatsApp')),
+                                    TextButton(
+                                        onPressed: () async {
+                                          final phoneNumber =
+                                              phone.number.replaceAll(' ', '');
+                                          final url =
+                                              'https://t.me/$phoneNumber';
+                                          log(url);
+                                          await launchUrl(Uri.parse(url));
+                                        },
+                                        child: const Text('Telegram')),
+                                  ],
+                                );
+                              });
                         },
                         title: Text(
                           phone.label.name.toTitleCase(),
                         ),
                         subtitle: Text(phone.number),
-                        trailing: const Icon(Icons.call_rounded),
+                        trailing: const Icon(Icons.info_rounded),
                       )),
                 if (contact.emails.isNotEmpty)
                   ListTile(

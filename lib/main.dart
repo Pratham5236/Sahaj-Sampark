@@ -18,10 +18,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             pageTransitionsTheme: const PageTransitionsTheme(
               builders: <TargetPlatform, PageTransitionsBuilder>{
-                TargetPlatform.android: SharedAxisPageTransitionsBuilder(
-                  transitionType: SharedAxisTransitionType.horizontal,
-                  fillColor: Colors.white,
-                ),
+                TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
                 TargetPlatform.iOS: CupertinoPageTransitionsBuilder()
               },
             ),
